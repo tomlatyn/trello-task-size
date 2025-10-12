@@ -8,7 +8,7 @@ export function cardBadgesHandler(t) {
         badges.push({
           text: `Est: ${taskData.estimation}`,
           color: 'blue',
-          icon: 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+          icon: './images/icon.png'
         });
       }
 

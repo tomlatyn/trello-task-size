@@ -2,7 +2,7 @@
   "name": "Task Size SM",
   "details": "Power-Up for managing task sizes and estimates",
   "icon": {
-    "url": "https://cdn-icons-png.flaticon.com/512/3114/3114883.png"
+    "url": "./images/icon.png"
   },
   "author": "Your Name",
   "capabilities": [
