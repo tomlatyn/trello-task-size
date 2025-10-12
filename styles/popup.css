@@ -67,7 +67,6 @@
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  transition: background 0.2s ease;
 }
 
 .est-btn:hover {
@@ -89,7 +88,6 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.2s ease;
 }
 
 .primary-btn {

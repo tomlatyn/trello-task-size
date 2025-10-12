@@ -9,7 +9,7 @@ function cardButtonsHandler(t) {
       return t.popup({
         title: 'Task Size SM',
         url: './views/popup.html',
-        height: 400
+        height: 300
       });
     }
   }];
@@ -23,7 +23,7 @@ function cardBadgesHandler(t) {
     if (taskData) {
       if (taskData.estimation !== undefined && taskData.estimation !== null) {
         badges.push({
-          text: `Est: ${taskData.estimation}`,
+          text: taskData.estimation.toString(),
           color: 'blue',
           icon: './images/icon.png'
         });
@@ -31,7 +31,7 @@ function cardBadgesHandler(t) {
 
       if (taskData.delivered !== undefined && taskData.delivered !== null) {
         badges.push({
-          text: `Del: ${taskData.delivered}`,
+          text: taskData.delivered.toString(),
           color: 'green'
         });
       }
