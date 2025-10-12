@@ -1,6 +1,6 @@
 /* Popup styles */
 .popup-container {
-  padding: 12px;
+  padding: 0;
   box-sizing: border-box;
   max-width: 100%;
 }
@@ -89,7 +89,7 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .primary-btn {

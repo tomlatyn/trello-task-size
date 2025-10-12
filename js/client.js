@@ -8,7 +8,8 @@ function cardButtonsHandler(t) {
     callback: function(t) {
       return t.popup({
         title: 'Task Size SM',
-        url: './views/popup.html'
+        url: './views/popup.html',
+        height: 400
       });
     }
   }];
