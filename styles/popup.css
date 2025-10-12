@@ -1,31 +1,95 @@
 /* Popup styles */
 .popup-container {
   padding: 12px;
+  width: 300px;
 }
 
 .popup-container h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+  margin: 0 0 12px 0;
+  font-size: 16px;
   font-weight: 600;
 }
 
-.popup-container p {
-  margin: 0 0 12px 0;
-  font-size: 12px;
-  color: #5e6c84;
-}
-
-.size-options {
+/* Input row with two fields side by side */
+.input-row {
   display: flex;
-  gap: 8px;
-  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.size-btn {
+.input-group {
   flex: 1;
-  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 11px;
+  color: #5e6c84;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.number-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #dfe1e6;
+  border-radius: 3px;
+  font-size: 14px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: #0079bf;
+}
+
+/* Estimation section */
+.estimation-section {
+  margin-bottom: 16px;
+}
+
+.section-label {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.estimation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.est-btn {
+  padding: 6px 12px;
   background: #ffffff;
   border: 2px solid #dfe1e6;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.est-btn:hover {
+  background: #f4f5f7;
+  border-color: #091e4221;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.primary-btn, .secondary-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
   border-radius: 3px;
   cursor: pointer;
   font-size: 14px;
@@ -33,13 +97,21 @@
   transition: all 0.2s ease;
 }
 
-.size-btn:hover {
-  background: #f4f5f7;
-  border-color: #091e4221;
-}
-
-.size-btn.selected {
+.primary-btn {
   background: #0079bf;
   color: white;
-  border-color: #0079bf;
+}
+
+.primary-btn:hover {
+  background: #026aa7;
+}
+
+.secondary-btn {
+  background: #ffffff;
+  color: #172b4d;
+  border: 2px solid #dfe1e6;
+}
+
+.secondary-btn:hover {
+  background: #f4f5f7;
 }

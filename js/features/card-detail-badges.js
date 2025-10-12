@@ -1,20 +1,21 @@
-// Card badges feature handler
-export function cardBadgesHandler(t) {
+// Card detail badges feature handler
+export function cardDetailBadgesHandler(t) {
   return t.get('card', 'shared', 'taskData').then(function(taskData) {
     const badges = [];
 
     if (taskData) {
       if (taskData.estimation !== undefined && taskData.estimation !== null) {
         badges.push({
-          text: `Est: ${taskData.estimation}`,
-          color: 'blue',
-          icon: 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+          title: 'Estimation',
+          text: taskData.estimation.toString(),
+          color: 'blue'
         });
       }
 
       if (taskData.delivered !== undefined && taskData.delivered !== null) {
         badges.push({
-          text: `Del: ${taskData.delivered}`,
+          title: 'Delivered',
+          text: taskData.delivered.toString(),
           color: 'green'
         });
       }

@@ -33,22 +33,20 @@ trello-task-size/
 
 ## Setup
 
-1. **Add an icon**: Place a `icon.png` file in the `images/` directory (recommended size: 80x80px)
-
-2. **Host the Power-Up**: Host all files on a public HTTPS server or use a service like:
+1. **Host the Power-Up**: Host all files on a public HTTPS server or use a service like:
    - GitHub Pages
    - Glitch
    - Netlify
    - Vercel
 
-3. **Create the Power-Up in Trello**:
+2. **Create the Power-Up in Trello**:
    - Go to https://trello.com/power-ups/admin
    - Click "Create New Power-Up"
    - Enter your Power-Up details
    - Set the iframe connector URL to your hosted `index.html`
    - Upload the manifest.json or enter the details manually
 
-4. **Enable the Power-Up**:
+3. **Enable the Power-Up**:
    - Open any Trello board
    - Click "Power-Ups" in the menu
    - Find "Task Size SM" under "Custom"

@@ -9,13 +9,36 @@
 <body>
   <div class="popup-container">
     <h3>Task Size</h3>
-    <p>Select a task size for this card:</p>
-    <div class="size-options">
-      <button class="size-btn" data-size="XS">XS</button>
-      <button class="size-btn" data-size="S">S</button>
-      <button class="size-btn" data-size="M">M</button>
-      <button class="size-btn" data-size="L">L</button>
-      <button class="size-btn" data-size="XL">XL</button>
+
+    <div class="input-row">
+      <div class="input-group">
+        <input type="number" id="estimation" class="number-input" placeholder="0" step="0.5" min="0">
+        <label>Estimation</label>
+      </div>
+      <div class="input-group">
+        <input type="number" id="delivered" class="number-input" placeholder="0" step="0.5" min="0">
+        <label>Delivered</label>
+      </div>
+    </div>
+
+    <div class="estimation-section">
+      <p class="section-label">Estimation</p>
+      <div class="estimation-buttons">
+        <button class="est-btn" data-value="0">0</button>
+        <button class="est-btn" data-value="0.5">0.5</button>
+        <button class="est-btn" data-value="1">1</button>
+        <button class="est-btn" data-value="2">2</button>
+        <button class="est-btn" data-value="3">3</button>
+        <button class="est-btn" data-value="5">5</button>
+        <button class="est-btn" data-value="8">8</button>
+        <button class="est-btn" data-value="13">13</button>
+        <button class="est-btn" data-value="21">21</button>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="save-btn" class="primary-btn">Save</button>
+      <button id="remove-btn" class="secondary-btn">Remove</button>
     </div>
   </div>
   <script src="../js/views/popup.js"></script>
