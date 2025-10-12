@@ -1,0 +1,18 @@
+{
+  "name": "Task Size SM",
+  "details": "Power-Up for managing task sizes and estimates",
+  "icon": {
+    "url": "./images/icon.png"
+  },
+  "author": "Your Name",
+  "capabilities": [
+    "card-buttons",
+    "card-badges",
+    "card-detail-badges"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "./index.html"
+    }
+  }
+}
