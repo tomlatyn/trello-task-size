@@ -55,18 +55,20 @@
 
 .estimation-buttons {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 2px;
 }
 
 .est-btn {
-  padding: 4px;
+  padding: 4px 4px;
   background: #ffffff;
   border: 1px solid #dfe1e6;
   border-radius: 3px;
   cursor: pointer;
   font-size: 11px;
   font-weight: 500;
+  flex: 1;
+  min-width: 0;
 }
 
 .est-btn:hover {
