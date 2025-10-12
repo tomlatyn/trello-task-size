@@ -67,8 +67,6 @@
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  flex: 1;
-  min-width: 0;
 }
 
 .est-btn:hover {
