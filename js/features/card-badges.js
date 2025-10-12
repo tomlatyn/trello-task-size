@@ -8,14 +8,15 @@ function cardBadgesHandler(t) {
         badges.push({
           text: taskData.estimation.toString(),
           color: 'blue',
-          icon: './images/icon.png'
+          icon: './images/estimation.png'
         });
       }
 
       if (taskData.delivered !== undefined && taskData.delivered !== null) {
         badges.push({
           text: taskData.delivered.toString(),
-          color: 'green'
+          color: 'green',
+          icon: './images/delivered.png'
         });
       }
     }
