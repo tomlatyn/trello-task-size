@@ -1,13 +1,8 @@
 /* Popup styles */
 .popup-container {
   padding: 12px;
-  width: 300px;
-}
-
-.popup-container h3 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 600;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 /* Input row with two fields side by side */
@@ -21,18 +16,19 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .input-group label {
   font-size: 11px;
   color: #5e6c84;
-  margin-top: 4px;
-  text-align: center;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .number-input {
   width: 100%;
-  padding: 8px;
+  padding: 6px 8px;
   border: 2px solid #dfe1e6;
   border-radius: 3px;
   font-size: 14px;
@@ -60,23 +56,22 @@
 .estimation-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
 }
 
 .est-btn {
-  padding: 6px 12px;
+  padding: 4px 10px;
   background: #ffffff;
   border: 2px solid #dfe1e6;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .est-btn:hover {
   background: #f4f5f7;
-  border-color: #091e4221;
 }
 
 /* Action buttons */
