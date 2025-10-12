@@ -2,7 +2,7 @@
 function cardButtonsHandler(t) {
   return [{
     icon: './images/icon.png',
-    text: 'Task Size',
+    text: 'Task Size SM',
     callback: function(t) {
       return t.popup({
         title: 'Task Size SM',
