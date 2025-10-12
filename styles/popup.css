@@ -56,16 +56,16 @@
 .estimation-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 2px;
 }
 
 .est-btn {
-  padding: 4px 10px;
+  padding: 4px;
   background: #ffffff;
-  border: 2px solid #dfe1e6;
+  border: 1px solid #dfe1e6;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
