@@ -71,6 +71,7 @@
 
 .est-btn:hover {
   background: #f4f5f7;
+  border: 2px solid #dfe1e6;
 }
 
 /* Action buttons */
@@ -82,29 +83,30 @@
 
 .primary-btn, .secondary-btn {
   flex: 1;
-  padding: 10px 16px;
+  padding: 10px;
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.1s ease;
+  text-align: center;
 }
 
 .primary-btn {
-  background: #0079bf;
+  background-color: #007AD5;
   color: white;
 }
 
 .primary-btn:hover {
-  background: #026aa7;
+  background-color: #0066b3;
 }
 
 .secondary-btn {
-  background: #ffffff;
-  color: #172b4d;
-  border: 2px solid #dfe1e6;
+  background-color: #F6F6F7;
+  color: #182A4E;
 }
 
 .secondary-btn:hover {
-  background: #f4f5f7;
+  background-color: #e8e9ea;
 }
