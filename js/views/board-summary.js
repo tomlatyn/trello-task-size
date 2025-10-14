@@ -2,15 +2,16 @@
 const t = window.TrelloPowerUp.iframe();
 
 const loading = document.getElementById('loading');
-const summaryList = document.getElementById('summary-list');
+const summaryTable = document.getElementById('summary-table');
+const summaryBody = document.getElementById('summary-body');
 
 async function loadBoardSummary() {
   try {
-    // Get all visible lists on the board
-    const lists = await t.lists('all');
+    // Get only visible lists on the board (respects board filters)
+    const lists = await t.lists('visible');
 
-    // Get all cards on the board
-    const cards = await t.cards('all');
+    // Get only visible cards on the board (respects board filters)
+    const cards = await t.cards('visible');
 
     // Create a map to store sums for each list
     const listSummaries = new Map();
@@ -24,7 +25,7 @@ async function loadBoardSummary() {
       });
     });
 
-    // Process all cards and sum up their values
+    // Process all visible cards and sum up their values
     for (const card of cards) {
       // Get task data for each card
       const taskData = await t.get(card.id, 'shared', 'taskData');
@@ -44,38 +45,29 @@ async function loadBoardSummary() {
 
     // Hide loading and show results
     loading.style.display = 'none';
+    summaryTable.style.display = 'table';
 
     // Display the summary
     if (listSummaries.size === 0) {
-      summaryList.innerHTML = '<div class="no-data">No lists found</div>';
+      summaryBody.innerHTML = '<tr><td colspan="3" class="no-data">No lists found</td></tr>';
     } else {
-      summaryList.innerHTML = '';
+      summaryBody.innerHTML = '';
 
       listSummaries.forEach((summary, listId) => {
-        const listItem = document.createElement('div');
-        listItem.className = 'list-summary';
-
-        listItem.innerHTML = `
-          <div class="list-name">${summary.name}</div>
-          <div class="list-stats">
-            <span class="stat estimation">
-              <span class="stat-label">Est:</span>
-              <span class="stat-value">${summary.estimation.toFixed(1)}</span>
-            </span>
-            <span class="stat delivered">
-              <span class="stat-label">Del:</span>
-              <span class="stat-value">${summary.delivered.toFixed(1)}</span>
-            </span>
-          </div>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="stack-name">${summary.name}</td>
+          <td class="estimation-value">${summary.estimation.toFixed(1)}</td>
+          <td class="delivered-value">${summary.delivered.toFixed(1)}</td>
         `;
-
-        summaryList.appendChild(listItem);
+        summaryBody.appendChild(row);
       });
     }
 
   } catch (error) {
     loading.style.display = 'none';
-    summaryList.innerHTML = `<div class="error">Error loading summary: ${error.message}</div>`;
+    summaryTable.style.display = 'table';
+    summaryBody.innerHTML = `<tr><td colspan="3" class="error">Error loading summary: ${error.message}</td></tr>`;
     console.error('Error loading board summary:', error);
   }
 }
