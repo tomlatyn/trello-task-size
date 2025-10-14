@@ -9,13 +9,13 @@ async function loadBoardSummary() {
     // Get all lists on the board
     const lists = await t.lists('all');
 
-    // Get only visible cards on the board (respects board filters)
-    const cards = await t.cards('visible');
+    // Get all cards on the board (only open/non-archived cards are returned)
+    const cards = await t.cards('all');
 
     // Create a map to store sums for each list
     const listSummaries = new Map();
 
-    // Process all visible cards and sum up their values by list
+    // Process all cards and sum up their values by list
     for (const card of cards) {
       // Get task data for each card using correct API syntax
       const taskData = await t.get(card.id, 'shared', 'taskData');
@@ -54,7 +54,7 @@ async function loadBoardSummary() {
 
     // Display the summary
     if (listSummaries.size === 0) {
-      summaryList.innerHTML = '<div class="no-data">No visible cards with data</div>';
+      summaryList.innerHTML = '<div class="no-data">No cards with data</div>';
     } else {
       summaryList.innerHTML = '';
 
