@@ -4,85 +4,135 @@ const t = window.TrelloPowerUp.iframe();
 const loading = document.getElementById('loading');
 const summaryList = document.getElementById('summary-list');
 
+// TEST VERSION 1: Using specific fields
+async function loadBoardSummaryV1() {
+  console.log('Testing V1: t.lists(id, name) and t.cards(id, idList)');
+  const lists = await t.lists('id', 'name');
+  const cards = await t.cards('id', 'idList');
+  return { lists, cards, version: 'V1' };
+}
+
+// TEST VERSION 2: Using 'all' parameter
+async function loadBoardSummaryV2() {
+  console.log('Testing V2: t.lists("all") and t.cards("all")');
+  const lists = await t.lists('all');
+  const cards = await t.cards('all');
+  return { lists, cards, version: 'V2' };
+}
+
+// TEST VERSION 3: Using board() method with REST API
+async function loadBoardSummaryV3() {
+  console.log('Testing V3: t.board() to get board info');
+  const board = await t.board('id', 'name', 'url');
+  console.log('Board:', board);
+  // Try to use REST API through board info
+  return { board, version: 'V3 - check console for board info' };
+}
+
+// TEST VERSION 4: No parameters
+async function loadBoardSummaryV4() {
+  console.log('Testing V4: t.lists() and t.cards() with no parameters');
+  const lists = await t.lists();
+  const cards = await t.cards();
+  return { lists, cards, version: 'V4' };
+}
+
+// TEST VERSION 5: Using getAll()
+async function loadBoardSummaryV5() {
+  console.log('Testing V5: t.getAll()');
+  const allData = await t.getAll();
+  console.log('All data:', allData);
+  return { allData, version: 'V5 - check console' };
+}
+
+async function testVersion(versionFunc) {
+  try {
+    const result = await versionFunc();
+    return { success: true, result };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
 async function loadBoardSummary() {
   try {
-    // Get all lists on the board
-    const lists = await t.lists('all');
-
-    // Get all cards on the board (only open/non-archived cards are returned)
-    const cards = await t.cards('all');
-
-    // Create a map to store sums for each list
-    const listSummaries = new Map();
-
-    // Process all cards and sum up their values by list
-    for (const card of cards) {
-      // Get task data for each card using correct API syntax
-      const taskData = await t.get(card.id, 'shared', 'taskData');
-
-      if (taskData) {
-        // Initialize the list summary if not exists
-        if (!listSummaries.has(card.idList)) {
-          // Find the list name
-          const list = lists.find(l => l.id === card.idList);
-          if (list) {
-            listSummaries.set(card.idList, {
-              name: list.name,
-              estimation: 0,
-              delivered: 0
-            });
-          }
-        }
-
-        // Add values to the list summary
-        if (listSummaries.has(card.idList)) {
-          const listSummary = listSummaries.get(card.idList);
-
-          if (taskData.estimation !== undefined && taskData.estimation !== null) {
-            listSummary.estimation += parseFloat(taskData.estimation) || 0;
-          }
-
-          if (taskData.delivered !== undefined && taskData.delivered !== null) {
-            listSummary.delivered += parseFloat(taskData.delivered) || 0;
-          }
-        }
-      }
-    }
-
-    // Hide loading and show results
     loading.style.display = 'none';
+    summaryList.innerHTML = '<div class="testing">Testing all versions...</div>';
 
-    // Display the summary
-    if (listSummaries.size === 0) {
-      summaryList.innerHTML = '<div class="no-data">No cards with data</div>';
-    } else {
-      summaryList.innerHTML = '';
+    // Test all versions
+    const results = [];
 
-      listSummaries.forEach((summary, listId) => {
-        const listItem = document.createElement('div');
-        listItem.className = 'list-item';
+    results.push({
+      name: 'V1: t.lists("id", "name") and t.cards("id", "idList")',
+      test: await testVersion(loadBoardSummaryV1)
+    });
 
-        listItem.innerHTML = `
-          <div class="list-name">${summary.name}</div>
-          <div class="badges">
-            <div class="badge estimation-badge">
-              <img src="./images/estimation.png" class="badge-icon" alt="Estimation">
-              <span class="badge-text">${summary.estimation.toFixed(1)}</span>
-            </div>
-            <div class="badge delivered-badge">
-              <img src="./images/delivered.png" class="badge-icon" alt="Delivered">
-              <span class="badge-text">${summary.delivered.toFixed(1)}</span>
-            </div>
-          </div>
-        `;
+    results.push({
+      name: 'V2: t.lists("all") and t.cards("all")',
+      test: await testVersion(loadBoardSummaryV2)
+    });
 
-        summaryList.appendChild(listItem);
-      });
-    }
+    results.push({
+      name: 'V3: t.board("id", "name", "url")',
+      test: await testVersion(loadBoardSummaryV3)
+    });
+
+    results.push({
+      name: 'V4: t.lists() and t.cards() (no params)',
+      test: await testVersion(loadBoardSummaryV4)
+    });
+
+    results.push({
+      name: 'V5: t.getAll()',
+      test: await testVersion(loadBoardSummaryV5)
+    });
+
+    // Display results
+    summaryList.innerHTML = '';
+
+    results.forEach((item) => {
+      const resultDiv = document.createElement('div');
+      resultDiv.className = 'test-result';
+
+      const statusClass = item.test.success ? 'success' : 'failed';
+      const statusText = item.test.success ? '✓ SUCCESS' : '✗ FAILED';
+
+      let dataPreview = '';
+      if (item.test.success) {
+        const data = item.test.result;
+        if (data.lists) {
+          dataPreview += `<br><small>Lists: ${data.lists.length || 0} items</small>`;
+        }
+        if (data.cards) {
+          dataPreview += `<br><small>Cards: ${data.cards.length || 0} items</small>`;
+        }
+        if (data.board) {
+          dataPreview += `<br><small>Board: ${JSON.stringify(data.board)}</small>`;
+        }
+        if (data.allData) {
+          dataPreview += `<br><small>All Data: Check console</small>`;
+        }
+      } else {
+        dataPreview = `<br><small class="error-msg">Error: ${item.test.error}</small>`;
+      }
+
+      resultDiv.innerHTML = `
+        <div class="test-header">
+          <span class="test-status ${statusClass}">${statusText}</span>
+          <span class="test-name">${item.name}</span>
+        </div>
+        <div class="test-data">${dataPreview}</div>
+      `;
+
+      summaryList.appendChild(resultDiv);
+    });
+
+    // Log all results to console for detailed inspection
+    console.log('All test results:', results);
 
   } catch (error) {
     loading.style.display = 'none';
-    summaryList.innerHTML = `<div class="error">Error loading summary: ${error.message}</div>`;
+    summaryList.innerHTML = `<div class="error">Error running tests: ${error.message}</div>`;
     console.error('Error loading board summary:', error);
   }
 }

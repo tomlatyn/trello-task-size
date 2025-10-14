@@ -5,7 +5,7 @@
   max-width: 100%;
 }
 
-.loading {
+.loading, .testing {
   text-align: center;
   color: #5e6c84;
   padding: 20px;
@@ -84,4 +84,61 @@
 
 .error {
   color: #eb5a46;
+}
+
+/* Test results styling */
+.test-result {
+  background: #ffffff;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.test-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.test-status {
+  font-weight: 700;
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.test-status.success {
+  background-color: #61bd4f;
+  color: white;
+}
+
+.test-status.failed {
+  background-color: #eb5a46;
+  color: white;
+}
+
+.test-name {
+  font-size: 13px;
+  color: #172b4d;
+  font-weight: 500;
+  flex: 1;
+}
+
+.test-data {
+  font-size: 12px;
+  color: #5e6c84;
+  margin-left: 24px;
+}
+
+.test-data small {
+  display: block;
+  margin-top: 2px;
+}
+
+.error-msg {
+  color: #eb5a46;
+  font-family: monospace;
 }
