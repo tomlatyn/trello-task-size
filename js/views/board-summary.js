@@ -2,13 +2,12 @@
 const t = window.TrelloPowerUp.iframe();
 
 const loading = document.getElementById('loading');
-const summaryTable = document.getElementById('summary-table');
-const summaryBody = document.getElementById('summary-body');
+const summaryList = document.getElementById('summary-list');
 
 async function loadBoardSummary() {
   try {
-    // Get only visible lists on the board (respects board filters)
-    const lists = await t.lists('visible');
+    // Get all lists on the board
+    const lists = await t.lists('all');
 
     // Get only visible cards on the board (respects board filters)
     const cards = await t.cards('visible');
@@ -16,58 +15,74 @@ async function loadBoardSummary() {
     // Create a map to store sums for each list
     const listSummaries = new Map();
 
-    // Initialize list summaries
-    lists.forEach(list => {
-      listSummaries.set(list.id, {
-        name: list.name,
-        estimation: 0,
-        delivered: 0
-      });
-    });
-
-    // Process all visible cards and sum up their values
+    // Process all visible cards and sum up their values by list
     for (const card of cards) {
-      // Get task data for each card
+      // Get task data for each card using correct API syntax
       const taskData = await t.get(card.id, 'shared', 'taskData');
 
-      if (taskData && listSummaries.has(card.idList)) {
-        const listSummary = listSummaries.get(card.idList);
-
-        if (taskData.estimation !== undefined && taskData.estimation !== null) {
-          listSummary.estimation += parseFloat(taskData.estimation) || 0;
+      if (taskData) {
+        // Initialize the list summary if not exists
+        if (!listSummaries.has(card.idList)) {
+          // Find the list name
+          const list = lists.find(l => l.id === card.idList);
+          if (list) {
+            listSummaries.set(card.idList, {
+              name: list.name,
+              estimation: 0,
+              delivered: 0
+            });
+          }
         }
 
-        if (taskData.delivered !== undefined && taskData.delivered !== null) {
-          listSummary.delivered += parseFloat(taskData.delivered) || 0;
+        // Add values to the list summary
+        if (listSummaries.has(card.idList)) {
+          const listSummary = listSummaries.get(card.idList);
+
+          if (taskData.estimation !== undefined && taskData.estimation !== null) {
+            listSummary.estimation += parseFloat(taskData.estimation) || 0;
+          }
+
+          if (taskData.delivered !== undefined && taskData.delivered !== null) {
+            listSummary.delivered += parseFloat(taskData.delivered) || 0;
+          }
         }
       }
     }
 
     // Hide loading and show results
     loading.style.display = 'none';
-    summaryTable.style.display = 'table';
 
     // Display the summary
     if (listSummaries.size === 0) {
-      summaryBody.innerHTML = '<tr><td colspan="3" class="no-data">No lists found</td></tr>';
+      summaryList.innerHTML = '<div class="no-data">No visible cards with data</div>';
     } else {
-      summaryBody.innerHTML = '';
+      summaryList.innerHTML = '';
 
       listSummaries.forEach((summary, listId) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="stack-name">${summary.name}</td>
-          <td class="estimation-value">${summary.estimation.toFixed(1)}</td>
-          <td class="delivered-value">${summary.delivered.toFixed(1)}</td>
+        const listItem = document.createElement('div');
+        listItem.className = 'list-item';
+
+        listItem.innerHTML = `
+          <div class="list-name">${summary.name}</div>
+          <div class="badges">
+            <div class="badge estimation-badge">
+              <img src="./images/estimation.png" class="badge-icon" alt="Estimation">
+              <span class="badge-text">${summary.estimation.toFixed(1)}</span>
+            </div>
+            <div class="badge delivered-badge">
+              <img src="./images/delivered.png" class="badge-icon" alt="Delivered">
+              <span class="badge-text">${summary.delivered.toFixed(1)}</span>
+            </div>
+          </div>
         `;
-        summaryBody.appendChild(row);
+
+        summaryList.appendChild(listItem);
       });
     }
 
   } catch (error) {
     loading.style.display = 'none';
-    summaryTable.style.display = 'table';
-    summaryBody.innerHTML = `<tr><td colspan="3" class="error">Error loading summary: ${error.message}</td></tr>`;
+    summaryList.innerHTML = `<div class="error">Error loading summary: ${error.message}</div>`;
     console.error('Error loading board summary:', error);
   }
 }
