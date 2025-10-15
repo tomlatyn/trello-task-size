@@ -3,6 +3,72 @@
 <head>
   <meta charset="utf-8">
   <script src="https://p.trellocdn.com/power-up.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      padding: 10px;
+      margin: 0;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    #users-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      padding: 8px;
+      background: #f9f9f9;
+    }
+    #users-list > div {
+      padding: 6px;
+      margin: 2px 0;
+    }
+    #users-list input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    #users-list label {
+      display: inline;
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    #apply-filters {
+      background: #0079bf;
+      color: white;
+    }
+    #apply-filters:hover {
+      background: #026aa7;
+    }
+    #clear-filters {
+      background: #f4f5f7;
+      color: #172b4d;
+    }
+    #clear-filters:hover {
+      background: #e4e6e9;
+    }
+  </style>
 </head>
 <body>
   <div>

@@ -1,68 +1,84 @@
-const t = window.TrelloPowerUp.iframe();
+var Promise = window.TrelloPowerUp.Promise;
+var t = window.TrelloPowerUp.iframe();
 
-async function loadFilters() {
-  const filters = await t.get('board', 'shared', 'summaryFilters');
-  return filters || { cardName: '', selectedUsers: [] };
-}
-
-async function loadUsers() {
-  const members = await t.board('members');
-  const usersList = document.getElementById('users-list');
-  const currentFilters = await loadFilters();
-
-  usersList.innerHTML = '';
-
-  members.forEach(member => {
-    const div = document.createElement('div');
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = `user-${member.id}`;
-    checkbox.value = member.id;
-    checkbox.checked = currentFilters.selectedUsers.includes(member.id);
-
-    const label = document.createElement('label');
-    label.htmlFor = `user-${member.id}`;
-    label.textContent = member.fullName || member.username;
-
-    div.appendChild(checkbox);
-    div.appendChild(label);
-    usersList.appendChild(div);
+function loadFilters() {
+  return t.get('board', 'shared', 'summaryFilters')
+  .then(function(filters) {
+    return filters || { cardName: '', selectedUsers: [] };
   });
 }
 
-async function loadCurrentFilters() {
-  const filters = await loadFilters();
-  document.getElementById('card-name-filter').value = filters.cardName || '';
+function loadUsers() {
+  var usersList = document.getElementById('users-list');
+
+  Promise.all([
+    t.board('members'),
+    loadFilters()
+  ])
+  .then(function(results) {
+    var members = results[0];
+    var currentFilters = results[1];
+
+    usersList.innerHTML = '';
+
+    if (!members || members.length === 0) {
+      usersList.innerHTML = '<div>No members found</div>';
+      return;
+    }
+
+    members.forEach(function(member) {
+      var div = document.createElement('div');
+      var checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = 'user-' + member.id;
+      checkbox.value = member.id;
+      checkbox.checked = currentFilters.selectedUsers.includes(member.id);
+
+      var label = document.createElement('label');
+      label.htmlFor = 'user-' + member.id;
+      label.textContent = member.fullName || member.username;
+
+      div.appendChild(checkbox);
+      div.appendChild(label);
+      usersList.appendChild(div);
+    });
+  })
+  .catch(function(error) {
+    console.error('Error loading users:', error);
+    usersList.innerHTML = '<div>Error: ' + error.message + '</div>';
+  });
 }
 
-document.getElementById('apply-filters').addEventListener('click', async function() {
-  const cardName = document.getElementById('card-name-filter').value;
-  const checkboxes = document.querySelectorAll('#users-list input[type="checkbox"]:checked');
-  const selectedUsers = Array.from(checkboxes).map(cb => cb.value);
+function loadCurrentFilters() {
+  loadFilters().then(function(filters) {
+    document.getElementById('card-name-filter').value = filters.cardName || '';
+  });
+}
 
-  await t.set('board', 'shared', 'summaryFilters', {
+document.getElementById('apply-filters').addEventListener('click', function() {
+  var cardName = document.getElementById('card-name-filter').value;
+  var checkboxes = document.querySelectorAll('#users-list input[type="checkbox"]:checked');
+  var selectedUsers = Array.prototype.slice.call(checkboxes).map(function(cb) {
+    return cb.value;
+  });
+
+  t.set('board', 'shared', 'summaryFilters', {
     cardName: cardName,
     selectedUsers: selectedUsers
+  })
+  .then(function() {
+    return t.back();
   });
-
-  if (window.opener) {
-    window.opener.postMessage({ type: 'filtersUpdated' }, '*');
-  }
-
-  t.closePopup();
 });
 
-document.getElementById('clear-filters').addEventListener('click', async function() {
-  await t.set('board', 'shared', 'summaryFilters', {
+document.getElementById('clear-filters').addEventListener('click', function() {
+  t.set('board', 'shared', 'summaryFilters', {
     cardName: '',
     selectedUsers: []
+  })
+  .then(function() {
+    return t.back();
   });
-
-  if (window.opener) {
-    window.opener.postMessage({ type: 'filtersUpdated' }, '*');
-  }
-
-  t.closePopup();
 });
 
 t.render(function() {

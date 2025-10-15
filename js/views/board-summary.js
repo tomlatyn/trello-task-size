@@ -1,63 +1,67 @@
-const t = window.TrelloPowerUp.iframe();
+var Promise = window.TrelloPowerUp.Promise;
+var t = window.TrelloPowerUp.iframe();
 
-async function getFilters() {
-  const filters = await t.get('board', 'shared', 'summaryFilters');
-  return filters || { cardName: '', selectedUsers: [] };
+function getFilters() {
+  return t.get('board', 'shared', 'summaryFilters')
+  .then(function(filters) {
+    return filters || { cardName: '', selectedUsers: [] };
+  });
 }
 
 function applyFilters(cards, filters) {
-  let filteredCards = cards;
+  var filteredCards = cards;
 
   if (filters.cardName && filters.cardName.trim() !== '') {
-    const searchTerm = filters.cardName.toLowerCase();
-    filteredCards = filteredCards.filter(card =>
-      card.name.toLowerCase().includes(searchTerm)
-    );
+    var searchTerm = filters.cardName.toLowerCase();
+    filteredCards = filteredCards.filter(function(card) {
+      return card.name.toLowerCase().includes(searchTerm);
+    });
   }
 
   if (filters.selectedUsers && filters.selectedUsers.length > 0) {
-    filteredCards = filteredCards.filter(card => {
+    filteredCards = filteredCards.filter(function(card) {
       if (!card.idMembers || card.idMembers.length === 0) {
         return false;
       }
-      return card.idMembers.some(memberId =>
-        filters.selectedUsers.includes(memberId)
-      );
+      return card.idMembers.some(function(memberId) {
+        return filters.selectedUsers.includes(memberId);
+      });
     });
   }
 
   return filteredCards;
 }
 
-async function loadBoardSummary() {
-  const loading = document.getElementById('loading');
-  const summaryList = document.getElementById('summary-list');
+function loadBoardSummary() {
+  var loading = document.getElementById('loading');
+  var summaryList = document.getElementById('summary-list');
 
-  try {
-    const lists = await t.lists('all');
-    const cards = await t.cards('all');
-    const filters = await getFilters();
-    const filteredCards = applyFilters(cards, filters);
+  Promise.all([
+    t.lists('all'),
+    t.cards('all'),
+    getFilters()
+  ])
+  .then(function(results) {
+    var lists = results[0];
+    var cards = results[1];
+    var filters = results[2];
+    var filteredCards = applyFilters(cards, filters);
 
-    const listSummaries = new Map();
+    var listSummaries = new Map();
 
-    for (const card of filteredCards) {
-      const taskData = await t.get(card.id, 'shared', 'taskData');
+    lists.forEach(function(list) {
+      listSummaries.set(list.id, {
+        name: list.name,
+        estimation: 0,
+        delivered: 0
+      });
+    });
 
-      if (taskData) {
-        if (!listSummaries.has(card.idList)) {
-          const list = lists.find(l => l.id === card.idList);
-          if (list) {
-            listSummaries.set(card.idList, {
-              name: list.name,
-              estimation: 0,
-              delivered: 0
-            });
-          }
-        }
-
-        if (listSummaries.has(card.idList)) {
-          const listSummary = listSummaries.get(card.idList);
+    var promises = filteredCards.map(function(card) {
+      return t.get(card.id, 'shared', 'taskData')
+      .then(function(taskData) {
+        if (taskData && listSummaries.has(card.idList)) {
+          var listSummary = listSummaries.get(card.idList);
 
           if (taskData.estimation !== undefined && taskData.estimation !== null) {
             listSummary.estimation += parseFloat(taskData.estimation) || 0;
@@ -67,35 +71,33 @@ async function loadBoardSummary() {
             listSummary.delivered += parseFloat(taskData.delivered) || 0;
           }
         }
-      }
-    }
-
-    loading.style.display = 'none';
-
-    if (listSummaries.size === 0) {
-      summaryList.innerHTML = '<div>No cards with data</div>';
-    } else {
-      summaryList.innerHTML = '';
-
-      listSummaries.forEach((summary) => {
-        const listItem = document.createElement('div');
-
-        listItem.innerHTML = `
-          <div><strong>${summary.name}</strong></div>
-          <div>Estimation: ${summary.estimation.toFixed(1)}</div>
-          <div>Delivered: ${summary.delivered.toFixed(1)}</div>
-          <br>
-        `;
-
-        summaryList.appendChild(listItem);
       });
-    }
+    });
 
-  } catch (error) {
+    return Promise.all(promises).then(function() {
+      return listSummaries;
+    });
+  })
+  .then(function(listSummaries) {
     loading.style.display = 'none';
-    summaryList.innerHTML = `<div>Error: ${error.message}</div>`;
+    summaryList.innerHTML = '';
+
+    listSummaries.forEach(function(summary) {
+      var listItem = document.createElement('div');
+
+      listItem.innerHTML =
+        '<strong>' + summary.name + '</strong> - ' +
+        'Estimation: ' + summary.estimation.toFixed(1) + ' | ' +
+        'Delivered: ' + summary.delivered.toFixed(1);
+
+      summaryList.appendChild(listItem);
+    });
+  })
+  .catch(function(error) {
+    loading.style.display = 'none';
+    summaryList.innerHTML = '<div>Error: ' + error.message + '</div>';
     console.error('Error loading board summary:', error);
-  }
+  });
 }
 
 document.getElementById('filter-button').addEventListener('click', function() {
@@ -103,13 +105,9 @@ document.getElementById('filter-button').addEventListener('click', function() {
     title: 'Filters',
     url: './board-filters.html',
     height: 400
-  });
-});
-
-window.addEventListener('message', function(event) {
-  if (event.data && event.data.type === 'filtersUpdated') {
+  }).then(function() {
     loadBoardSummary();
-  }
+  });
 });
 
 t.render(function() {
