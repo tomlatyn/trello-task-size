@@ -54,6 +54,10 @@ function loadBoardSummary() {
     var lists = results[0];
     var cards = results[1];
     var filters = results[2];
+
+    console.log('First card data:', cards[0]);
+    console.log('All card keys:', cards[0] ? Object.keys(cards[0]) : 'no cards');
+
     var filteredCards = applyFilters(cards, filters);
 
     var listSummaries = new Map();
