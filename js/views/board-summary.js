@@ -11,22 +11,31 @@ function getFilters() {
 function applyFilters(cards, filters) {
   var filteredCards = cards;
 
+  console.log('Applying filters:', filters);
+  console.log('Total cards:', cards.length);
+
   if (filters.cardName && filters.cardName.trim() !== '') {
     var searchTerm = filters.cardName.toLowerCase();
     filteredCards = filteredCards.filter(function(card) {
       return card.name.toLowerCase().includes(searchTerm);
     });
+    console.log('After card name filter:', filteredCards.length);
   }
 
   if (filters.selectedUsers && filters.selectedUsers.length > 0) {
+    console.log('Filtering by users:', filters.selectedUsers);
     filteredCards = filteredCards.filter(function(card) {
+      console.log('Card:', card.name, 'idMembers:', card.idMembers);
       if (!card.idMembers || card.idMembers.length === 0) {
         return false;
       }
-      return card.idMembers.some(function(memberId) {
+      var hasMatch = card.idMembers.some(function(memberId) {
         return filters.selectedUsers.includes(memberId);
       });
+      console.log('Has match:', hasMatch);
+      return hasMatch;
     });
+    console.log('After user filter:', filteredCards.length);
   }
 
   return filteredCards;
