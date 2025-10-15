@@ -13,38 +13,46 @@ function loadUsers() {
 
   usersList.innerHTML = '<div>Loading members...</div>';
 
-  Promise.all([
-    t.board('members'),
-    loadFilters()
-  ])
-  .then(function(results) {
-    var members = results[0];
-    var currentFilters = results[1];
+  t.board('members')
+  .then(function(boardData) {
+    console.log('Board data:', boardData);
+    console.log('Type:', typeof boardData);
+    console.log('Is array:', Array.isArray(boardData));
 
-    console.log('Board members:', members);
+    var members = boardData;
 
-    usersList.innerHTML = '';
-
-    if (!members || members.length === 0) {
-      usersList.innerHTML = '<div>No members found</div>';
-      return;
+    if (boardData && boardData.members) {
+      console.log('Using boardData.members');
+      members = boardData.members;
     }
 
-    members.forEach(function(member) {
-      var div = document.createElement('div');
-      var checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = 'user-' + member.id;
-      checkbox.value = member.id;
-      checkbox.checked = currentFilters.selectedUsers.includes(member.id);
+    console.log('Final members:', members);
+    console.log('Is members array:', Array.isArray(members));
 
-      var label = document.createElement('label');
-      label.htmlFor = 'user-' + member.id;
-      label.textContent = member.fullName || member.username;
+    return loadFilters().then(function(currentFilters) {
+      usersList.innerHTML = '';
 
-      div.appendChild(checkbox);
-      div.appendChild(label);
-      usersList.appendChild(div);
+      if (!members || !Array.isArray(members) || members.length === 0) {
+        usersList.innerHTML = '<div>No members found</div>';
+        return;
+      }
+
+      members.forEach(function(member) {
+        var div = document.createElement('div');
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = 'user-' + member.id;
+        checkbox.value = member.id;
+        checkbox.checked = currentFilters.selectedUsers.includes(member.id);
+
+        var label = document.createElement('label');
+        label.htmlFor = 'user-' + member.id;
+        label.textContent = member.fullName || member.username;
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        usersList.appendChild(div);
+      });
     });
   })
   .catch(function(error) {
