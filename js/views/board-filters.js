@@ -11,6 +11,8 @@ function loadFilters() {
 function loadUsers() {
   var usersList = document.getElementById('users-list');
 
+  usersList.innerHTML = '<div>Loading members...</div>';
+
   Promise.all([
     t.board('members'),
     loadFilters()
@@ -18,6 +20,8 @@ function loadUsers() {
   .then(function(results) {
     var members = results[0];
     var currentFilters = results[1];
+
+    console.log('Board members:', members);
 
     usersList.innerHTML = '';
 
