@@ -12,6 +12,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      background: transparent;
     }
     #loading {
       padding: 20px;
@@ -31,13 +32,14 @@
     #summary-list {
       flex: 1;
       overflow-y: auto;
+      background: transparent;
     }
     .list-summary-item {
       padding: 8px 10px;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      border-bottom: 1px solid #dfe1e6;
+      border-bottom: 1px solid #c4c9cc;
     }
     .list-header {
       display: flex;
@@ -76,9 +78,15 @@
       background: #baf3db;
       color: #164b35;
     }
-    .badge-icon {
+    .badge-item.estimation .badge-icon {
       width: 14px;
       height: 14px;
+      filter: brightness(0) saturate(100%) invert(14%) sepia(80%) saturate(1808%) hue-rotate(200deg) brightness(93%) contrast(101%);
+    }
+    .badge-item.delivered .badge-icon {
+      width: 14px;
+      height: 14px;
+      filter: brightness(0) saturate(100%) invert(20%) sepia(34%) saturate(1629%) hue-rotate(105deg) brightness(94%) contrast(96%);
     }
     .badge-number {
       font-weight: 400;
@@ -103,7 +111,7 @@
 
     /* Dark mode styles */
     body.dark-mode {
-      background: #282e33;
+      background: transparent;
     }
     body.dark-mode #filter-info {
       background: #22272b;
@@ -111,7 +119,7 @@
       border-bottom-color: #738496;
     }
     body.dark-mode .list-summary-item {
-      border-bottom-color: #738496;
+      border-bottom-color: #404040;
     }
     body.dark-mode .list-name {
       color: #b6c2cf;
@@ -126,9 +134,15 @@
       background: #0A326C;
       color: #CCE0FF;
     }
+    body.dark-mode .badge-item.estimation .badge-icon {
+      filter: brightness(0) saturate(100%) invert(85%) sepia(14%) saturate(1629%) hue-rotate(183deg) brightness(103%) contrast(101%);
+    }
     body.dark-mode .badge-item.delivered {
       background: #345B45;
       color: #BAF3DB;
+    }
+    body.dark-mode .badge-item.delivered .badge-icon {
+      filter: brightness(0) saturate(100%) invert(89%) sepia(13%) saturate(1020%) hue-rotate(94deg) brightness(99%) contrast(94%);
     }
   </style>
 </head>
