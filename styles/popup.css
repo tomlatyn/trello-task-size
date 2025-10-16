@@ -1,4 +1,5 @@
 /* Popup styles */
+
 .popup-container {
   padding: 0;
   box-sizing: border-box;
@@ -26,6 +27,10 @@
   font-weight: 500;
 }
 
+body.dark-mode .input-group label {
+  color: #9fadbc;
+}
+
 .number-input {
   width: 100%;
   padding: 6px 8px;
@@ -34,6 +39,14 @@
   font-size: 14px;
   text-align: center;
   box-sizing: border-box;
+  background: #ffffff;
+  color: #172b4d;
+}
+
+body.dark-mode .number-input {
+  background: #22272b;
+  color: #b6c2cf;
+  border-color: #738496;
 }
 
 .number-input:focus {
@@ -53,6 +66,10 @@
   color: #172b4d;
 }
 
+body.dark-mode .section-label {
+  color: #b6c2cf;
+}
+
 .estimation-buttons {
   display: flex;
   flex-wrap: nowrap;
@@ -69,11 +86,22 @@
   font-weight: 500;
   flex: 1;
   min-width: 0;
+  color: #172b4d;
 }
 
 .est-btn:hover {
   background: #f4f5f7;
   border: 1px solid #dfe1e6;
+}
+
+body.dark-mode .est-btn {
+  background: #282e33;
+  border-color: #738496;
+  color: #b6c2cf;
+}
+
+body.dark-mode .est-btn:hover {
+  background: #22272b;
 }
 
 /* Action buttons */
@@ -104,6 +132,14 @@
   background-color: #0066b3;
 }
 
+body.dark-mode .primary-btn {
+  background-color: #0079bf;
+}
+
+body.dark-mode .primary-btn:hover {
+  background-color: #026aa7;
+}
+
 .secondary-btn {
   background-color: #F6F6F7;
   color: #182A4E;
@@ -111,4 +147,13 @@
 
 .secondary-btn:hover {
   background-color: #e8e9ea;
+}
+
+body.dark-mode .secondary-btn {
+  background-color: #2C333A;
+  color: #B6C2CF;
+}
+
+body.dark-mode .secondary-btn:hover {
+  background-color: #252b31;
 }

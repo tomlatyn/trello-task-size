@@ -1,4 +1,5 @@
 /* Board summary styles */
+
 .summary-container {
   padding: 12px;
   box-sizing: border-box;
@@ -10,6 +11,11 @@
   color: #5e6c84;
   padding: 20px;
   font-size: 14px;
+}
+
+body.dark-mode .loading,
+body.dark-mode .testing {
+  color: #9fadbc;
 }
 
 .summary-list {
@@ -32,12 +38,25 @@
   background: #f9f9f9;
 }
 
+body.dark-mode .list-item {
+  background: #282e33;
+  border-color: #738496;
+}
+
+body.dark-mode .list-item:hover {
+  background: #22272b;
+}
+
 .list-name {
   font-weight: 600;
   color: #172b4d;
   font-size: 14px;
   flex: 1;
   margin-right: 12px;
+}
+
+body.dark-mode .list-name {
+  color: #b6c2cf;
 }
 
 .badges {
@@ -86,6 +105,14 @@
   color: #eb5a46;
 }
 
+body.dark-mode .no-data {
+  color: #9fadbc;
+}
+
+body.dark-mode .error {
+  color: #f87168;
+}
+
 /* Test results styling */
 .test-result {
   background: #ffffff;
@@ -93,6 +120,11 @@
   border-radius: 4px;
   padding: 12px;
   margin-bottom: 8px;
+}
+
+body.dark-mode .test-result {
+  background: #282e33;
+  border-color: #738496;
 }
 
 .test-header {
@@ -127,10 +159,18 @@
   flex: 1;
 }
 
+body.dark-mode .test-name {
+  color: #b6c2cf;
+}
+
 .test-data {
   font-size: 12px;
   color: #5e6c84;
   margin-left: 24px;
+}
+
+body.dark-mode .test-data {
+  color: #9fadbc;
 }
 
 .test-data small {
