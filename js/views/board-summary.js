@@ -14,7 +14,7 @@ function applyFilters(cards, filters) {
   if (filters.cardName && filters.cardName.trim() !== '') {
     var searchTerm = filters.cardName.toLowerCase();
     filteredCards = filteredCards.filter(function(card) {
-      return card.name.toLowerCase().includes(searchTerm);
+      return card.name && card.name.toLowerCase().includes(searchTerm);
     });
   }
 
