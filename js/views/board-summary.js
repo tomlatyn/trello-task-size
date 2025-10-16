@@ -86,28 +86,51 @@ function loadBoardSummary() {
     loading.style.display = 'none';
     summaryList.innerHTML = '';
 
-    listSummaries.forEach(function(summary) {
-      var listItem = document.createElement('div');
-      listItem.className = 'list-summary-item';
+    return getFilters().then(function(filters) {
+      var filterInfo = document.getElementById('filter-info');
+      var filterParts = [];
 
-      var estimationValue = summary.estimation % 1 === 0 ? summary.estimation.toFixed(0) : summary.estimation.toFixed(1);
-      var deliveredValue = summary.delivered % 1 === 0 ? summary.delivered.toFixed(0) : summary.delivered.toFixed(1);
+      if (filters.cardName && filters.cardName.trim() !== '') {
+        filterParts.push('Card name: "' + filters.cardName + '"');
+      }
 
-      listItem.innerHTML =
-        '<div class="list-name">' + summary.name + '</div>' +
-        '<div class="list-details">' +
-          '<span class="card-count">' + summary.cardCount + ' cards</span>' +
-          '<span class="badge-item estimation">' +
-            '<img src="../images/estimation.png" class="badge-icon">' +
-            '<span class="badge-number">' + estimationValue + '</span>' +
-          '</span>' +
-          '<span class="badge-item delivered">' +
-            '<img src="../images/delivered.png" class="badge-icon">' +
-            '<span class="badge-number">' + deliveredValue + '</span>' +
-          '</span>' +
-        '</div>';
+      if (filters.selectedUsers && filters.selectedUsers.length > 0) {
+        filterParts.push(filters.selectedUsers.length + ' user' + (filters.selectedUsers.length > 1 ? 's' : '') + ' selected');
+      }
 
-      summaryList.appendChild(listItem);
+      if (filterParts.length > 0) {
+        filterInfo.textContent = 'Filters applied: ' + filterParts.join(', ');
+        filterInfo.classList.remove('hidden');
+      } else {
+        filterInfo.classList.add('hidden');
+      }
+
+      listSummaries.forEach(function(summary) {
+        var listItem = document.createElement('div');
+        listItem.className = 'list-summary-item';
+
+        var estimationValue = summary.estimation % 1 === 0 ? summary.estimation.toFixed(0) : summary.estimation.toFixed(1);
+        var deliveredValue = summary.delivered % 1 === 0 ? summary.delivered.toFixed(0) : summary.delivered.toFixed(1);
+
+        listItem.innerHTML =
+          '<div class="list-header">' +
+            '<span class="list-name">' + summary.name + '</span>' +
+            '<span class="bullet">•</span>' +
+            '<span class="card-count">' + summary.cardCount + ' cards</span>' +
+          '</div>' +
+          '<div class="list-details">' +
+            '<span class="badge-item estimation">' +
+              '<img src="../images/estimation.png" class="badge-icon">' +
+              '<span class="badge-number">' + estimationValue + '</span>' +
+            '</span>' +
+            '<span class="badge-item delivered">' +
+              '<img src="../images/delivered.png" class="badge-icon">' +
+              '<span class="badge-number">' + deliveredValue + '</span>' +
+            '</span>' +
+          '</div>';
+
+        summaryList.appendChild(listItem);
+      });
     });
   })
   .catch(function(error) {
