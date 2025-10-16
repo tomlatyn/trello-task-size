@@ -86,29 +86,31 @@ function loadBoardSummary() {
     loading.style.display = 'none';
     summaryList.innerHTML = '';
 
-    return getFilters().then(function(filters) {
+    return Promise.all([getFilters(), t.board('members')]).then(function(results) {
+      var filters = results[0];
+      var boardData = results[1];
+      var members = boardData.members || boardData;
+
       var filterInfo = document.getElementById('filter-info');
       var filterParts = [];
-
-      console.log('Filter info check:', filters);
 
       if (filters.cardName && filters.cardName.trim() !== '') {
         filterParts.push('Card name: "' + filters.cardName + '"');
       }
 
       if (filters.selectedUsers && filters.selectedUsers.length > 0) {
-        filterParts.push(filters.selectedUsers.length + ' user' + (filters.selectedUsers.length > 1 ? 's' : '') + ' selected');
+        var selectedNames = filters.selectedUsers.map(function(userId) {
+          var member = members.find(function(m) { return m.id === userId; });
+          return member ? (member.fullName || member.username) : userId;
+        }).join(', ');
+        filterParts.push('Users: ' + selectedNames);
       }
 
-      console.log('Filter parts:', filterParts);
-
       if (filterParts.length > 0) {
-        filterInfo.textContent = 'Filters applied: ' + filterParts.join(', ');
+        filterInfo.textContent = 'Filters applied: ' + filterParts.join(' | ');
         filterInfo.classList.remove('hidden');
-        console.log('Filter info shown');
       } else {
         filterInfo.classList.add('hidden');
-        console.log('Filter info hidden');
       }
 
       listSummaries.forEach(function(summary) {
