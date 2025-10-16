@@ -90,6 +90,8 @@ function loadBoardSummary() {
       var filterInfo = document.getElementById('filter-info');
       var filterParts = [];
 
+      console.log('Filter info check:', filters);
+
       if (filters.cardName && filters.cardName.trim() !== '') {
         filterParts.push('Card name: "' + filters.cardName + '"');
       }
@@ -98,11 +100,15 @@ function loadBoardSummary() {
         filterParts.push(filters.selectedUsers.length + ' user' + (filters.selectedUsers.length > 1 ? 's' : '') + ' selected');
       }
 
+      console.log('Filter parts:', filterParts);
+
       if (filterParts.length > 0) {
         filterInfo.textContent = 'Filters applied: ' + filterParts.join(', ');
         filterInfo.classList.remove('hidden');
+        console.log('Filter info shown');
       } else {
         filterInfo.classList.add('hidden');
+        console.log('Filter info hidden');
       }
 
       listSummaries.forEach(function(summary) {
@@ -112,11 +118,13 @@ function loadBoardSummary() {
         var estimationValue = summary.estimation % 1 === 0 ? summary.estimation.toFixed(0) : summary.estimation.toFixed(1);
         var deliveredValue = summary.delivered % 1 === 0 ? summary.delivered.toFixed(0) : summary.delivered.toFixed(1);
 
+        var cardText = summary.cardCount === 1 ? '1 card' : summary.cardCount + ' cards';
+
         listItem.innerHTML =
           '<div class="list-header">' +
             '<span class="list-name">' + summary.name + '</span>' +
             '<span class="bullet">•</span>' +
-            '<span class="card-count">' + summary.cardCount + ' cards</span>' +
+            '<span class="card-count">' + cardText + '</span>' +
           '</div>' +
           '<div class="list-details">' +
             '<span class="badge-item estimation">' +

@@ -2,10 +2,10 @@
 function boardButtonsHandler(t) {
   return [{
     icon: './images/icon.png',
-    text: 'Column Summary',
+    text: 'Board Summary',
     callback: function(t) {
       return t.popup({
-        title: 'Column Summary',
+        title: 'Board Summary',
         url: './views/board-summary.html',
         height: 400
       });
