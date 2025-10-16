@@ -108,10 +108,10 @@ function loadBoardSummary() {
 
       if (filterParts.length > 0) {
         filterInfo.textContent = 'Filters applied: ' + filterParts.join(' | ');
-        filterInfo.classList.remove('hidden');
       } else {
-        filterInfo.classList.add('hidden');
+        filterInfo.textContent = 'No filters applied';
       }
+      filterInfo.classList.remove('hidden');
 
       listSummaries.forEach(function(summary) {
         var listItem = document.createElement('div');
