@@ -154,7 +154,7 @@ document.getElementById('filter-button').addEventListener('click', function() {
   t.popup({
     title: 'Filters',
     url: './board-filters.html',
-    height: 600
+    height: 500
   }).then(function() {
     loadBoardSummary();
   });

@@ -7,7 +7,7 @@ function boardButtonsHandler(t) {
       return t.popup({
         title: 'Board Summary',
         url: './views/board-summary.html',
-        height: 600
+        height: 500
       });
     }
   }];
