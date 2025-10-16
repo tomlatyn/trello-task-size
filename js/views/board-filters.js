@@ -15,19 +15,11 @@ function loadUsers() {
 
   t.board('members')
   .then(function(boardData) {
-    console.log('Board data:', boardData);
-    console.log('Type:', typeof boardData);
-    console.log('Is array:', Array.isArray(boardData));
-
     var members = boardData;
 
     if (boardData && boardData.members) {
-      console.log('Using boardData.members');
       members = boardData.members;
     }
-
-    console.log('Final members:', members);
-    console.log('Is members array:', Array.isArray(members));
 
     return loadFilters().then(function(currentFilters) {
       usersList.innerHTML = '';

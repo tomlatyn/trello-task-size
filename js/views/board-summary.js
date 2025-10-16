@@ -11,31 +11,23 @@ function getFilters() {
 function applyFilters(cards, filters) {
   var filteredCards = cards;
 
-  console.log('Applying filters:', filters);
-  console.log('Total cards:', cards.length);
-
   if (filters.cardName && filters.cardName.trim() !== '') {
     var searchTerm = filters.cardName.toLowerCase();
     filteredCards = filteredCards.filter(function(card) {
       return card.name.toLowerCase().includes(searchTerm);
     });
-    console.log('After card name filter:', filteredCards.length);
   }
 
   if (filters.selectedUsers && filters.selectedUsers.length > 0) {
-    console.log('Filtering by users:', filters.selectedUsers);
     filteredCards = filteredCards.filter(function(card) {
-      console.log('Card:', card.name, 'members:', card.members);
       if (!card.members || card.members.length === 0) {
         return false;
       }
       var hasMatch = card.members.some(function(member) {
         return filters.selectedUsers.includes(member.id);
       });
-      console.log('Has match:', hasMatch);
       return hasMatch;
     });
-    console.log('After user filter:', filteredCards.length);
   }
 
   return filteredCards;
@@ -55,9 +47,6 @@ function loadBoardSummary() {
     var cards = results[1];
     var filters = results[2];
 
-    console.log('First card data:', cards[0]);
-    console.log('All card keys:', cards[0] ? Object.keys(cards[0]) : 'no cards');
-
     var filteredCards = applyFilters(cards, filters);
 
     var listSummaries = new Map();
@@ -66,7 +55,8 @@ function loadBoardSummary() {
       listSummaries.set(list.id, {
         name: list.name,
         estimation: 0,
-        delivered: 0
+        delivered: 0,
+        cardCount: 0
       });
     });
 
@@ -75,6 +65,7 @@ function loadBoardSummary() {
       .then(function(taskData) {
         if (taskData && listSummaries.has(card.idList)) {
           var listSummary = listSummaries.get(card.idList);
+          listSummary.cardCount += 1;
 
           if (taskData.estimation !== undefined && taskData.estimation !== null) {
             listSummary.estimation += parseFloat(taskData.estimation) || 0;
@@ -97,11 +88,20 @@ function loadBoardSummary() {
 
     listSummaries.forEach(function(summary) {
       var listItem = document.createElement('div');
+      listItem.className = 'list-summary-item';
 
       listItem.innerHTML =
-        '<strong>' + summary.name + '</strong> - ' +
-        'Estimation: ' + summary.estimation.toFixed(1) + ' | ' +
-        'Delivered: ' + summary.delivered.toFixed(1);
+        '<strong class="list-name">' + summary.name + '</strong>' +
+        '<span class="bullet">•</span>' +
+        '<span class="card-count">' + summary.cardCount + ' cards</span>' +
+        '<span class="badge-item estimation">' +
+          '<img src="../images/estimation.png" class="badge-icon">' +
+          '<span class="badge-number">' + summary.estimation.toFixed(1) + '</span>' +
+        '</span>' +
+        '<span class="badge-item delivered">' +
+          '<img src="../images/delivered.png" class="badge-icon">' +
+          '<span class="badge-number">' + summary.delivered.toFixed(1) + '</span>' +
+        '</span>';
 
       summaryList.appendChild(listItem);
     });
