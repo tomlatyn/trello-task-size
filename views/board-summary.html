@@ -84,10 +84,11 @@
       background: #0079bf;
       color: white;
       border: none;
-      border-radius: 3px;
+      border-radius: 0;
       cursor: pointer;
       font-size: 14px;
-      margin: 10px 0;
+      margin: 0;
+      border-bottom: 1px solid #dfe1e6;
     }
     #filter-button:hover {
       background: #026aa7;
@@ -96,9 +97,9 @@
 </head>
 <body>
   <div id="loading">Loading...</div>
+  <button id="filter-button">Filters</button>
   <div id="filter-info" class="hidden"></div>
   <div id="summary-list"></div>
-  <button id="filter-button">Filters</button>
   <script src="../js/views/board-summary.js"></script>
 </body>
 </html>
