@@ -25,12 +25,12 @@ function applyFilters(cards, filters) {
   if (filters.selectedUsers && filters.selectedUsers.length > 0) {
     console.log('Filtering by users:', filters.selectedUsers);
     filteredCards = filteredCards.filter(function(card) {
-      console.log('Card:', card.name, 'idMembers:', card.idMembers);
-      if (!card.idMembers || card.idMembers.length === 0) {
+      console.log('Card:', card.name, 'members:', card.members);
+      if (!card.members || card.members.length === 0) {
         return false;
       }
-      var hasMatch = card.idMembers.some(function(memberId) {
-        return filters.selectedUsers.includes(memberId);
+      var hasMatch = card.members.some(function(member) {
+        return filters.selectedUsers.includes(member.id);
       });
       console.log('Has match:', hasMatch);
       return hasMatch;
