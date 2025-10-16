@@ -81,7 +81,11 @@ document.getElementById('clear-filters').addEventListener('click', function() {
     selectedUsers: []
   })
   .then(function() {
-    return t.back();
+    document.getElementById('card-name-filter').value = '';
+    var checkboxes = document.querySelectorAll('#users-list input[type="checkbox"]:checked');
+    checkboxes.forEach(function(checkbox) {
+      checkbox.checked = false;
+    });
   });
 });
 
