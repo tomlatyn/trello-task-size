@@ -1,6 +1,30 @@
 var Promise = window.TrelloPowerUp.Promise;
 var t = window.TrelloPowerUp.iframe();
 
+// Theme detection and application
+function applyTheme() {
+  var context = t.getContext();
+  var theme = context ? (context.theme || context.initialTheme || 'light') : 'light';
+
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// Apply theme on load
+applyTheme();
+
+// Subscribe to theme changes
+t.subscribeToThemeChanges(function(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+});
+
 function getFilters() {
   return t.get('board', 'shared', 'summaryFilters')
   .then(function(filters) {
