@@ -90,18 +90,22 @@ function loadBoardSummary() {
       var listItem = document.createElement('div');
       listItem.className = 'list-summary-item';
 
+      var estimationValue = summary.estimation % 1 === 0 ? summary.estimation.toFixed(0) : summary.estimation.toFixed(1);
+      var deliveredValue = summary.delivered % 1 === 0 ? summary.delivered.toFixed(0) : summary.delivered.toFixed(1);
+
       listItem.innerHTML =
-        '<strong class="list-name">' + summary.name + '</strong>' +
-        '<span class="bullet">•</span>' +
-        '<span class="card-count">' + summary.cardCount + ' cards</span>' +
-        '<span class="badge-item estimation">' +
-          '<img src="../images/estimation.png" class="badge-icon">' +
-          '<span class="badge-number">' + summary.estimation.toFixed(1) + '</span>' +
-        '</span>' +
-        '<span class="badge-item delivered">' +
-          '<img src="../images/delivered.png" class="badge-icon">' +
-          '<span class="badge-number">' + summary.delivered.toFixed(1) + '</span>' +
-        '</span>';
+        '<div class="list-name">' + summary.name + '</div>' +
+        '<div class="list-details">' +
+          '<span class="card-count">' + summary.cardCount + ' cards</span>' +
+          '<span class="badge-item estimation">' +
+            '<img src="../images/estimation.png" class="badge-icon">' +
+            '<span class="badge-number">' + estimationValue + '</span>' +
+          '</span>' +
+          '<span class="badge-item delivered">' +
+            '<img src="../images/delivered.png" class="badge-icon">' +
+            '<span class="badge-number">' + deliveredValue + '</span>' +
+          '</span>' +
+        '</div>';
 
       summaryList.appendChild(listItem);
     });
