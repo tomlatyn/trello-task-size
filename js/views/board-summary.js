@@ -137,6 +137,41 @@ function loadBoardSummary() {
       }
       filterInfo.classList.remove('hidden');
 
+      // Calculate totals
+      var totalCards = 0;
+      var totalEstimation = 0;
+      var totalDelivered = 0;
+
+      listSummaries.forEach(function(summary) {
+        totalCards += summary.cardCount;
+        totalEstimation += summary.estimation;
+        totalDelivered += summary.delivered;
+      });
+
+      // Display total summary
+      var totalSummary = document.getElementById('total-summary');
+      var totalEstimationValue = totalEstimation % 1 === 0 ? totalEstimation.toFixed(0) : totalEstimation.toFixed(1);
+      var totalDeliveredValue = totalDelivered % 1 === 0 ? totalDelivered.toFixed(0) : totalDelivered.toFixed(1);
+      var totalCardText = totalCards === 1 ? '1 card' : totalCards + ' cards';
+
+      totalSummary.innerHTML =
+        '<div class="total-header">' +
+          '<span class="total-label">Total</span>' +
+          '<span class="bullet">•</span>' +
+          '<span class="total-count">' + totalCardText + '</span>' +
+        '</div>' +
+        '<div class="total-details">' +
+          '<span class="badge-item estimation">' +
+            '<img src="../images/estimation.png" class="badge-icon">' +
+            '<span class="badge-number">' + totalEstimationValue + '</span>' +
+          '</span>' +
+          '<span class="badge-item delivered">' +
+            '<img src="../images/delivered.png" class="badge-icon">' +
+            '<span class="badge-number">' + totalDeliveredValue + '</span>' +
+          '</span>' +
+        '</div>';
+      totalSummary.classList.remove('hidden');
+
       listSummaries.forEach(function(summary) {
         var listItem = document.createElement('div');
         listItem.className = 'list-summary-item';
