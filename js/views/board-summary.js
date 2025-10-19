@@ -156,7 +156,7 @@ function loadBoardSummary() {
 
       totalSummary.innerHTML =
         '<div class="total-header">' +
-          '<span class="total-label">Total</span>' +
+          '<span class="total-label">Filtered cards</span>' +
           '<span class="bullet">•</span>' +
           '<span class="total-count">' + totalCardText + '</span>' +
         '</div>' +
