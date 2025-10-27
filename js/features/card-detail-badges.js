@@ -7,12 +7,12 @@ function cardDetailBadgesHandler(t) {
     if (!taskData || (taskData.estimation === undefined && taskData.delivered === undefined)) {
       badges.push({
         title: 'Task Size',
-        text: 'Set task size',
+        text: 'Set Task Size',
         color: 'blue',
         callback: function(t) {
           return t.popup({
             title: 'Set Task Size',
-            url: './views/popup.html',
+            url: './views/popup.html?focus=estimation',
             height: 240
           });
         }

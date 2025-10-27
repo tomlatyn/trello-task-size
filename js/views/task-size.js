@@ -30,15 +30,8 @@ const deliveredInput = document.getElementById('delivered');
 const saveBtn = document.getElementById('save-btn');
 const removeBtn = document.getElementById('remove-btn');
 
-// Handle estimation button clicks
-document.querySelectorAll('.est-btn').forEach(button => {
-  button.addEventListener('click', function() {
-    estimationInput.value = this.dataset.value;
-  });
-});
-
-// Handle save button
-saveBtn.addEventListener('click', async function() {
+// Function to save and close
+async function saveAndClose() {
   const estimation = parseFloat(estimationInput.value) || 0;
   const delivered = parseFloat(deliveredInput.value) || 0;
 
@@ -48,7 +41,32 @@ saveBtn.addEventListener('click', async function() {
   });
 
   t.closePopup();
+}
+
+// Handle estimation button clicks
+document.querySelectorAll('.est-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    estimationInput.value = this.dataset.value;
+  });
 });
+
+// Handle Enter key on input fields
+estimationInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    saveAndClose();
+  }
+});
+
+deliveredInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    saveAndClose();
+  }
+});
+
+// Handle save button
+saveBtn.addEventListener('click', saveAndClose);
 
 // Handle remove button
 removeBtn.addEventListener('click', async function() {
