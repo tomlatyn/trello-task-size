@@ -56,10 +56,25 @@ removeBtn.addEventListener('click', async function() {
   t.closePopup();
 });
 
-// Load existing data
+// Load existing data and handle focus
 t.get('card', 'shared', 'taskData').then(function(taskData) {
   if (taskData) {
     estimationInput.value = taskData.estimation || '';
     deliveredInput.value = taskData.delivered || '';
   }
+
+  // Check for focus parameter in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const focusField = urlParams.get('focus');
+
+  // Set focus on the appropriate field with a small delay to ensure rendering is complete
+  setTimeout(function() {
+    if (focusField === 'estimation') {
+      estimationInput.focus();
+      estimationInput.select();
+    } else if (focusField === 'delivered') {
+      deliveredInput.focus();
+      deliveredInput.select();
+    }
+  }, 100);
 });
