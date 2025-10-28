@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://p.trellocdn.com/power-up.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: transparent;
+    }
+    .filter-content {
+      flex: 1;
+      overflow-y: auto;
+      background: transparent;
+    }
+    .filter-section {
+      padding: 10px;
+      border-bottom: 1px solid #c4c9cc;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: #172b4d;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #dfe1e6;
+      border-radius: 3px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #0079bf;
+    }
+    #users-list {
+      max-height: none;
+      overflow-y: visible;
+      padding: 4px 0;
+    }
+    #users-list > div {
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #f4f5f7;
+    }
+    #users-list > div:last-child {
+      border-bottom: none;
+    }
+    #users-list input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    #users-list label {
+      display: inline;
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+      font-size: 14px;
+      color: #172b4d;
+    }
+    .button-container {
+      padding: 0;
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: normal;
+    }
+    #apply-filters {
+      background: #0079bf;
+      color: white;
+    }
+    #apply-filters:hover {
+      background: #026aa7;
+    }
+    #clear-filters {
+      background: #f4f5f7;
+      color: #172b4d;
+    }
+    #clear-filters:hover {
+      background: #e4e6e9;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background: transparent;
+      color: #b6c2cf;
+    }
+    body.dark-mode .filter-section {
+      border-bottom-color: #404040;
+    }
+    body.dark-mode label {
+      color: #b6c2cf;
+    }
+    body.dark-mode input[type="text"] {
+      background: #22272b;
+      color: #b6c2cf;
+      border-color: #738496;
+    }
+    body.dark-mode #users-list > div {
+      border-bottom-color: #22272b;
+    }
+    body.dark-mode #users-list label {
+      color: #b6c2cf;
+    }
+    body.dark-mode #clear-filters {
+      background: #2C333A;
+      color: #B6C2CF;
+    }
+    body.dark-mode #clear-filters:hover {
+      background: #252b31;
+    }
+  </style>
+</head>
+<body>
+  <div class="filter-content">
+    <div class="filter-section">
+      <label>Filter by card name:</label>
+      <input type="text" id="card-name-filter" placeholder="Enter card name">
+    </div>
+    <div class="filter-section">
+      <label>Filter by users:</label>
+      <div id="users-list"></div>
+    </div>
+  </div>
+  <div class="button-container">
+    <button id="clear-filters">Clear</button>
+    <button id="apply-filters">Apply</button>
+  </div>
+  <script src="../js/views/board-filters.js"></script>
+</body>
+</html>
